@@ -1,0 +1,41 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        AUTHOR VS BENCHMARK
+    </div>
+    <div class="panel-body">
+
+        <form class="form-horizontal" role="form" ng-submit="go()">
+            <div class="form-group" style="margin-top: 20px;">
+                <label for="benchmark" class="col-sm-2 control-label">Benchmark</label>
+                <div class="col-sm-8">
+                    <select class="form-control" ng-model="benchmark" ng-options="benchmark.name for benchmark in benchmarks" ng-change="benchmarkChanged()">
+                    </select>
+                </div>
+                <div class="col-sm-2" ng-if="count">
+                    {{count}} authors
+                </div>
+            </div>
+            <div class="form-group" style="margin-top: 20px;">
+                <label for="author" class="col-sm-2 control-label">Author</label>
+                <div class="col-sm-10">
+                    <angucomplete-alt id="author" pause="400" selected-object="authorChanged" remote-url="/api/author/search?s=" remote-url-data-field="authors" title-field="name" description-field="organization" input-class="form-control form-control-small" match-class="highlight" text-no-results="No authors found." />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-8">
+                  <button ng-style="stl" ng-disabled="dis" type="submit">{{txt?txt:'GO'}}</button>
+                </div>
+            </div>
+        </form>
+
+        <div ng-if="error != null" style="color: red">
+            {{error}}
+        </div>
+
+        <div ng-if="plot1_src != null || plot2_src != null">
+            <img imageonload="Author Rank/Yr Cumulative" class="dashboard-part" ng-src="{{plot1_src}}" />
+            <img imageonload="Author Rank/Yr " class="dashboard-part" ng-src="{{plot2_src}}" />
+        </div>
+
+    </div>
+</div>

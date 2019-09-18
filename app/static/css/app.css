@@ -1,0 +1,60 @@
+body {
+    font-family: Courier;
+    font-size: 14px;
+    min-height: 2000px;
+    padding-top: 90px;
+}
+
+.table.borderless td,
+.table.borderless th {
+    border: none;
+}
+
+.multi-level select {
+    display: block;
+    margin-top: 10px;
+}
+
+.table.inner {
+    width: 90%;
+}
+
+.table.inner.borderless td,
+.table.inner.borderless th {
+    border: none;
+}
+
+.table.inner>tbody>tr>td {
+    border-top: none;
+    border-bottom: 1px solid #DDD;
+}
+
+.angucomplete-dropdown {
+    width: 100%;
+}
+
+.highlight {
+    color: #FF0000;
+}
+
+.angucomplete-selected-row {
+    background-color: #F5F5F5;
+    color: black;
+}
+
+.dashboard-part {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.of-the-author {
+    color: #FF0000;
+}
+
+.navbar-brand span {
+    font-size: 12px;
+}
+
+.navbar-brand {
+    height: 70px;
+}

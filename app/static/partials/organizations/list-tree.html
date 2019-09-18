@@ -1,0 +1,58 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        ORGANIZATIONS @ {{organization.name}}
+    </div>
+    <table class="table">
+        <tr ng-repeat-start="organization_1 in tree | orderBy:'name'">
+            <td>
+                <a ng-if="organization_1.website_url != null" href="{{organization_1.website_url}}" target="_blank">{{ organization.name }}</a>
+                <span ng-if="organization_1.website_url == null">{{ organization_1.name }}</span>
+            </td>
+            <td>{{ organization_1.number_of_authors }} authors</td>
+            <td style="width: 250px">
+                <button ng-click="deleteOrganization(organization_1.id)">DELETE</button>
+                <button ng-click="editOrganization(organization_1.id)">EDIT</button>
+                <button ng-click="addChildOrganization(organization_1.id)">ADD CHILD</button>
+            </td>
+        </tr>
+        <tr ng-repeat-end ng-show="organization_1.children">
+            <td colspan="3" align="center">
+                <table class="table inner">
+                    <tr ng-repeat-start="organization_2 in organization_1.children | orderBy:'name'">
+                        <td>
+                            <a ng-if="organization_2.website_url != null" href="{{organization_2.website_url}}" target="_blank">{{ organization.name }}</a>
+                            <span ng-if="organization_2.website_url == null">{{ organization_2.name }}</span>
+                        </td>
+                        <td>{{ organization_2.number_of_authors }} authors</td>
+                        <td style="width: 250px">
+                            <button ng-click="deleteOrganization(organization_2.id)">DELETE</button>
+                            <button ng-click="editOrganization(organization_2.id)">EDIT</button>
+                            <button ng-click="addChildOrganization(organization_2.id)">ADD CHILD</button>
+                        </td>
+                    </tr>
+                    <tr ng-repeat-end ng-show="organization_2.children">
+                        <td colspan="3" align="center">
+                            <table class="table inner">
+                                <tr ng-repeat="organization_3 in organization_2.children | orderBy:'name'">
+                                    <td>
+                                        <a ng-if="organization_3.website_url != null" href="{{organization_3.website_url}}" target="_blank">{{ organization.name }}</a>
+                                        <span ng-if="organization_3.website_url == null">{{ organization_3.name }}</span>
+                                    </td>
+                                    <td>{{ organization_3.number_of_authors }} authors</td>
+                                    <td style="width: 250px">
+                                        <button ng-click="deleteOrganization(organization_3.id)">DELETE</button>
+                                        <button ng-click="editOrganization(organization_3.id)">EDIT</button>
+                                        <button ng-click="addChildOrganization(organization_3.id)">ADD CHILD</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <div class="panel-footer">
+        <button ng-click="createOrganization()">CREATE NEW ORGANIZATION</button>
+    </div>
+</div>

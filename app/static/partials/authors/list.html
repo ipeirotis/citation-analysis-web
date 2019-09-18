@@ -1,0 +1,32 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        AUTHORS
+    </div>
+    <table class="table">
+        <tr>
+            <th>#</th>
+            <th>NAME</th>
+            <th>ORGANIZATION</th>
+            <th>SCHOLAR ID</th>
+            <th style="width: 150px">&nbsp;</th>
+        </tr>
+        <tr ng-repeat="author in authors | orderBy:'name'">
+            <td>{{ (currentPage - 1) * resultsPerPage + $index + 1 }}</td>
+            <td>{{ author.name }}</td>
+            <td>{{ author.organization_tree }}</td>
+            <td>{{ author.scholar_id }}</td>
+            <td>
+                <button ng-click="deleteAuthor(author.id)">DELETE</button>
+                <button ng-click="editAuthor(author.id)">EDIT</button>
+            </td>
+        </tr>
+    </table>
+    <div class="pager">
+        <button ng-click="previousPage()" ng-disabled="currentPage == 1">&lt;</button>
+        Page {{ currentPage }} / {{ totalPages }}
+        <button ng-click="nextPage()" ng-disabled="currentPage == totalPages">&gt;</button>
+    </div>
+    <div class="panel-footer">
+        <button ng-click="createAuthor()">CREATE NEW AUTHOR</button>
+    </div>
+</div>

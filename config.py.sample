@@ -1,0 +1,34 @@
+class Config(object):
+
+    # Enable/disable debug mode.
+    DEBUG = True
+
+    # The hostname that the server listens on.
+    HOST = '0.0.0.0'
+    
+    # The port that the server listens on.
+    PORT = 5000
+    
+    # Enable/disable CSRF protection for forms.
+    WTF_CSRF_ENABLED = False
+
+    # The database URI to use for the connection.
+    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://user:password@localhost/citation_analysis_db'
+
+    # Whether SQLAlchemy should track modifications of objects and emit
+    # signals.
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    # The size of the database pool.
+    SQLALCHEMY_POOL_SIZE = 10
+
+    # The number of connections that can be created after the pool
+    # reaches its maximum size. When those additional connections are
+    # returned to the pool, they are disconnected and discarded.
+    SQLALCHEMY_MAX_OVERFLOW = 10
+
+    # Whether SQLAlchemy should log all statements issued to stderr.
+    SQLALCHEMY_ECHO = False
+
+    # The base URL where the supervisor can be reached.
+    SUPERVISOR_BASE_URL = 'http://localhost:4242'

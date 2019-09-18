@@ -1,0 +1,54 @@
+<div class="form-group" style="margin-top: 20px;">
+    <label for="name" class="col-sm-2 control-label">Name</label>
+    <div class="col-sm-8">
+        <input type="text" ng-model="organization.name" class="form-control" id="name" required="required" />
+    </div>
+</div>
+<div class="form-group">
+    <label for="location" class="col-sm-2 control-label">Location</label>
+    <div class="col-sm-8">
+        <input type="text" ng-model="organization.location" class="form-control" id="location" />
+    </div>
+</div>
+<div class="form-group">
+    <label for="scholar_org_id" class="col-sm-2 control-label">Google Scholar Organization ID</label>
+    <div class="col-sm-8">
+        <input type="text" ng-model="organization.scholar_org_id" class="form-control" id="scholar_org_id" />
+    </div>
+</div>
+<div class="form-group">
+    <label for="website_url" class="col-sm-2 control-label">Website URL</label>
+    <div class="col-sm-8">
+        <input type="text" ng-model="organization.website_url" class="form-control" id="website_url" />
+    </div>
+</div>
+<div class="form-group">
+    <label for="children_source_url" class="col-sm-2 control-label">Children source URL</label>
+    <div class="col-sm-8">
+        <input type="text" ng-model="organization.children_source_url" class="form-control" id="children_source_url" />
+    </div>
+</div>
+<div class="form-group">
+    <label for="organization_1" class="col-sm-2 control-label">Parent</label>
+    <div class="multi-level col-sm-10">
+        <select name="organization_1" id="organization_1" ng-model="organization_1" ng-options="organization_1.name for organization_1 in organizations_1" ng-change="organization.parent_id = organization_1.id; organization_2 = null; organization_3 = null; organization_4 = null; getChildren(organization_1.id, 2)">
+            <option value=""></option>
+        </select>
+        <select name="organization_2" id="organization_2" ng-model="organization_2" ng-options="organization_2.name for organization_2 in organizations_2" ng-show="organizations_2.length" ng-change="organization.parent_id = organization_2.id; organization_3 = null; organization_4 = null; getChildren(organization_2.id, 3)">
+            <option value=""></option>
+        </select>
+        <select name="organization_3" id="organization_3" ng-model="organization_3" ng-options="organization_3.name for organization_3 in organizations_3" ng-show="organizations_3.length" ng-change="organization.parent_id = organization_3.id; organization_4 = null; getChildren(organization_3.id, 4)">
+            <option value=""></option>
+        </select>
+        <select name="organization_4" id="organization_4" ng-model="organization_4" ng-options="organization_4.name for organization_4 in organizations_4" ng-show="organizations_4.length" ng-change="organization.parent_id = organization_4.id || organization_3.id || organization_2.id || organization_1.id">
+            <option value=""></option>
+        </select>
+    </div>
+    <input type="text" ng-model="organization.parent_id" style="display: none" />
+</div>
+<div class="form-group">
+    <div class="col-sm-offset-2 col-sm-8">
+        <button type="submit">SAVE ORGANIZATION</button>
+        <button type="button" ng-click="cancel()">CANCEL</button>
+    </div>
+</div>

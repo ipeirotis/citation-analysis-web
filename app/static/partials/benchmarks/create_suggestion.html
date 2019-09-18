@@ -1,0 +1,14 @@
+<form class="form-horizontal" role="form" ng-submit="createSuggestion()">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+        :q
+
+:q
+            Suggest a new person for benchmark {{benchmark.name}}
+        </div>
+        <div class="well well-sm">
+            <p>{{benchmark.description}}</p>
+        </div>
+        <div ng-include="'/partials/benchmarks/_suggestionForm.html'"></div>
+    </div>
+</form>

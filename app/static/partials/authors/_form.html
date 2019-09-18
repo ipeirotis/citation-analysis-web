@@ -1,0 +1,60 @@
+<div class="form-group" style="margin-top: 20px;">
+    <label for="name" class="col-sm-2 control-label">Name</label>
+    <div class="col-sm-8">
+        <input type="text" ng-model="author.name" class="form-control" id="name" />
+    </div>
+</div>
+<div class="form-group">
+    <label for="organization_1" class="col-sm-2 control-label">Organization</label>
+    <div class="col-sm-10 multi-level">
+        <select name="organization_1" id="organization_1" ng-model="organization_1" ng-options="organization_1.name for organization_1 in organizations_1" ng-change="author.organization_id = organization_1.id; organization_2 = null; getChildren(organization_1.id, 2); organization_3 = null; organization_4 = null">
+            <option value=""></option>
+        </select>
+        <select name="organization_2" id="organization_2" ng-model="organization_2" ng-options="organization_2.name for organization_2 in organizations_2" ng-show="organizations_2.length" ng-change="author.organization_id = organization_2.id || organization_1.id; organization_3 = null; getChildren(organization_2.id, 3); organization_4 = null">
+            <option value=""></option>
+        </select>
+        <select name="organization_3" id="organization_3" ng-model="organization_3" ng-options="organization_3.name for organization_3 in organizations_3" ng-show="organizations_3.length" ng-change="author.organization_id = organization_3.id || organization_2.id || organization_1.id; organization_4 = null; getChildren(organization_3.id, 4)">
+            <option value=""></option>
+        </select>
+        <select name="organization_4" id="organization_4" ng-model="organization_4" ng-options="organization_4.name for organization_4 in organizations_4" ng-show="organizations_4.length" ng-change="author.organization_id = organization_4.id || organization_3.id || organization_2.id || organization_1.id">
+            <option value=""></option>
+        </select>
+    </div>
+    <input type="text" ng-model="author.organization_id" style="display: none" />
+</div>
+<div class="form-group">
+    <label for="title" class="col-sm-2 control-label">Title</label>
+    <div class="col-sm-8">
+        <input type="text" ng-model="author.title" class="form-control" id="title" />
+    </div>
+</div>
+<div class="form-group">
+    <label for="website_url" class="col-sm-2 control-label">Website URL</label>
+    <div class="col-sm-8">
+        <input type="text" ng-model="author.website_url" class="form-control" id="website_url" />
+    </div>
+</div>
+<div class="form-group">
+    <label for="year_of_phd" class="col-sm-2 control-label">Year of Ph.D.</label>
+    <div class="col-sm-2">
+        <input type="text" ng-model="author.year_of_phd" class="form-control" id="year_of_phd" />
+    </div>
+</div>
+<div class="form-group">
+    <label for="tenured" class="col-sm-2 control-label">Tenured</label>
+    <div class="col-sm-2">
+        <input type="checkbox" ng-model="author.tenured" class="form-control" id="tenured" />
+    </div>
+</div>
+<div class="form-group">
+    <label for="scholar_id" class="col-sm-2 control-label">Google Scholar ID</label>
+    <div class="col-sm-2">
+        <input type="text" ng-model="author.scholar_id" class="form-control" id="scholar_id" />
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-sm-offset-2 col-sm-8">
+        <button type="submit">SAVE AUTHOR</button>
+        <button type="button" ng-click="cancel()">CANCEL</button>
+    </div>
+</div>

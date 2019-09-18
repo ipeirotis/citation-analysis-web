@@ -1,0 +1,57 @@
+<!doctype html>
+<html ng-app="datamgmt">
+
+<head>
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/bower_components/angucomplete-alt/angucomplete-alt.css">
+    <link rel="stylesheet" href="/bower_components/noty/lib/noty.css">
+    <link rel="stylesheet" href="/bower_components/magnific-popup/dist/magnific-popup.css">
+    <link rel="stylesheet" href="/css/app.css">
+    <title>Citation Analysis - Data Management</title>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#/">Citation Analysis<br/><span>DASHBOARD</span></a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="#/benchmarks">BENCHMARKS</a></li>
+                    <li><a href="#/author-vs-benchmark">AUTHOR VS BENCHMARK</a></li>
+                    <li><a href="#/citation-percentiles">CITATION PERCENTILES</a></li>
+                    <!--
+                    <li><a href="#/average-career-ranking">AVERAGE CAREER RANKING</a></li>
+                    <li><a href="#/benchmark-quantiles">BENCHMARK QUANTILES</a></li>
+                    -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div ng-view></div>
+    </div>
+
+    <script src="/bower_components/angular/angular.min.js"></script>
+    <script src="/bower_components/angular-route/angular-route.js"></script>
+    <script src="/bower_components/angular-resource/angular-resource.min.js"></script>
+    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/bower_components/noty/lib/noty.min.js"></script>
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/bower_components/angucomplete-alt/angucomplete-alt.js"></script>
+    <script src="/bower_components/magnific-popup/dist/jquery.magnific-popup.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/controllers.js"></script>
+    <script src="/js/services.js"></script>
+</body>
+
+</html>

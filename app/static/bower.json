@@ -1,0 +1,12 @@
+{
+  "name": "citation-analysis",
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "angular": "1.5.5",
+    "angular-route": "1.5.5",
+    "angular-resource": "1.5.5",
+    "noty": "^3.1.2",
+    "angucomplete-alt": "2.4.1",
+    "magnific-popup": "^1.1.0"
+  }
+}

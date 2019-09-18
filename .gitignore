@@ -1,0 +1,5 @@
+*~
+**/.DS_Store
+**/*.pyc
+app/static/bower_components
+config.py

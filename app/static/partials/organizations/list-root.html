@@ -1,0 +1,35 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        ORGANIZATIONS
+    </div>
+    <table class="table">
+        <tr>
+            <th>#</th>
+            <th>NAME</th>
+            <th>LOCATION</th>
+            <th style="width: 200px">&nbsp;</th>
+        </tr>
+        <tr ng-repeat="organization in organizations | orderBy:'id'">
+            <td>{{ (currentPage - 1) * resultsPerPage + $index + 1 }}</td>
+            <td>
+                <a ng-if="organization.website_url != null" href="{{organization.website_url}}" target="_blank">{{ organization.name }}</a>
+                <span ng-if="organization.website_url == null">{{ organization.name }}</span>
+            </td>
+            <td>{{ organization.location }}</td>
+            <td>
+                <button ng-click="deleteOrganization(organization.id)">DELETE</button>
+                <button ng-click="editOrganization(organization.id)">EDIT</button>
+                <button ng-click="viewOrganizationTree(organization.id)">TREE</button>
+                <button ng-click="viewAuthors(organization.id)">AUTHORS</button>
+            </td>
+        </tr>
+    </table>
+    <div class="pager">
+        <button ng-click="previousPage()" ng-disabled="currentPage == 1">&lt;</button>
+        Page {{ currentPage }} / {{ totalPages }}
+        <button ng-click="nextPage()" ng-disabled="currentPage == totalPages">&gt;</button>
+    </div>
+    <div class="panel-footer">
+        <button ng-click="createOrganization()">CREATE NEW ORGANIZATION</button>
+    </div>
+</div>
