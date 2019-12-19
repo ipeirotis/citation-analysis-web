@@ -14,7 +14,7 @@ db.init_app(app)
 with app.app_context():
 
     # Set up the controllers.
-    import controllers
+    from . import controllers
 
 
 @app.route('/')

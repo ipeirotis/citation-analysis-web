@@ -1,25 +1,25 @@
 from app import app, db
 from datetime import datetime
 from flask import Flask, jsonify, make_response, request, Response, send_file
-from flask.ext.restless import APIManager, ProcessingException
+from flask_restless import APIManager, ProcessingException
+from io import BytesIO
+import json
 import math
 import matplotlib
 matplotlib.use("Agg", force=True)
 matplotlib.rc("figure", facecolor="white")
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvasAgg
-from models import Author, Benchmark, Organization, Publication, Suggestions
+from .models import Author, Benchmark, Organization, Publication, Suggestions
 import pandas
 import numpy
 import requests
 from sqlalchemy import text
-import StringIO
 from threading import RLock
-from urlparse import urljoin
+from urllib.parse import urljoin
 
 import scholarly
 import seaborn as sns
-import cStringIO
 import base64
 import subprocess
 
@@ -72,7 +72,7 @@ ERRORIMAGE = "static/error_image.png"
 apimanager.create_api(Organization, methods=['DELETE', 'GET', 'POST', 'PUT'],
                       include_methods=['ancestor_ids'],
                       exclude_columns=['authors'],
-                      results_per_page=None)
+                      results_per_page=0)
 
 
 
@@ -172,7 +172,7 @@ apimanager.create_api(Author, methods=['DELETE', 'GET', 'POST', 'PUT'],
                       include_methods=['organization_ids', 'organization_tree'],
                       exclude_columns=[],
                       preprocessors={'GET_MANY': [preprocess_author]},
-                      results_per_page=None)
+                      results_per_page=0)
 
 
 @app.route('/api/author/search', methods=['GET'])
@@ -187,12 +187,13 @@ def search_authors():
                                   Author.name.ilike('%' + s + '%')) \
                           .all()
     result = {
-        'authors': map(
+        'authors': list(map(
             lambda author: {
                 'id': author.id,
                 'name': author.name + ' (' + author.scholar_id + ')',
                 'organization': author.organization_tree()},
-            authors)}
+            authors))
+    }
 
     return jsonify(**result)
 
@@ -230,20 +231,20 @@ apimanager.create_api(Publication, methods=['GET'],
                       include_methods=[],
                       exclude_columns=[],
                       preprocessors={'GET_MANY': [preprocess_publication]},
-                      results_per_page=None)
+                      results_per_page=0)
 
 # Set up the Benchmarks and the Suggestions API.
 
 apimanager.create_api(Benchmark, methods=['DELETE', 'GET', 'POST', 'PUT'],
                       include_methods=[],
                       exclude_columns=[],
-                      results_per_page=None)
+                      results_per_page=0)
 
 
 apimanager.create_api(Suggestions, methods=['DELETE', 'GET', 'POST', 'PUT'],
                       include_methods=[],
                       exclude_columns=[],
-                      results_per_page=None)
+                      results_per_page=0)
 
 
 
@@ -311,7 +312,7 @@ def count_benchmark_authors2():
     benchmarks = Benchmark.query.all()
     txt = "(SELECT '{}' as name, A.id FROM ({}) AS A)"
     qs = " UNION ALL ".join([txt.format(b.name, b.the_query) for b in benchmarks])
-    print qs
+    print(qs)
     query = """
         select
             name, count(*) as cnt
@@ -334,7 +335,7 @@ def count_benchmark_authors2():
             and
                 author.retrieved_at is not null
         ) as B
-        on 
+        on
             A.id = B.id
         group by
             name;
@@ -474,8 +475,8 @@ WHERE   c.author_id IN ({benchmark})
             ylabel = "Number of citations"
             xlabel = "Age (Years since first citation)"
     except Exception as exc:  # This happens when there are no data in benchmark
-        print type(exc)
-        print exc
+        print(type(exc))
+        print(exc)
         axes = plt.figure().add_subplot(111)
         title = ("An Error of type {} occured.\n"
                  "Python says: {}.").format(type(exc).__name__, exc)
@@ -491,7 +492,7 @@ WHERE   c.author_id IN ({benchmark})
     # Send the plot.
     figure = axes.get_figure()
     canvas = FigureCanvasAgg(figure)
-    output = StringIO.StringIO()
+    output = BytesIO()
     canvas.print_png(output)
     response = make_response(output.getvalue())
     response.mimetype = 'image/png'
@@ -571,7 +572,7 @@ def plot_benchmark_quantiles_and_author():
     # Send the plot.
     figure = axes.get_figure()
     canvas = figure.canvas
-    output = StringIO.StringIO()
+    output = BytesIO()
     canvas.print_png(output)
     response = make_response(output.getvalue())
     response.mimetype = 'image/png'
@@ -701,7 +702,7 @@ def plot_author_rank_over_time():
     # Send the plot.
     figure = axes.get_figure()
     canvas = figure.canvas
-    output = StringIO.StringIO()
+    output = BytesIO()
     canvas.print_png(output)
     response = make_response(output.getvalue())
     response.mimetype = 'image/png'
@@ -756,7 +757,7 @@ def scholarly_search_name():
     refresh = request.args.get('refresh')
     tsess = Session()
     author = tsess.query(TempAuthor).filter(FullTextSearch(a_name, TempAuthor)).all()
-    print [[a.name, a.scholar_id] for a in list(author)]
+    print([a.name, a.scholar_id] for a in list(author))
 
     if not refresh and author:
         return jsonify({
@@ -783,7 +784,7 @@ def scholarly_search_name():
 
             subprocess.Popen(
                     [
-                        "python2",
+                        "python3",
                         "fetch_profile.py",
                         "author"
                     ] + author.split(" ")
@@ -813,14 +814,14 @@ def db_scholarly_search():
             .filter(TempAuthor.scholar_id == profile)\
             .order_by(TempAuthor.id.desc())\
             .first()
-    print "\n", profile, a_name, "\n", author
+    print("\n", profile, a_name, "\n", author)
 
     auth = author.json_all if author else None
 
     if (author is None or refresh) and a_name:
         # Start a search
-        subprocess.Popen(["python2", "fetch_profile.py", "author"] + a_name.split(" "))
-        print "Starting a search"
+        subprocess.Popen(["python3", "fetch_profile.py", "author"] + a_name.split(" "))
+        print("Starting a search")
         return jsonify(**{"author": auth, "msg": "Initiated a search"})
 
     if author.status == "Processing":
@@ -848,7 +849,7 @@ def author_report():
     if profile is None:
         return jsonify(**{"results": []})
 
-    print 'Profile: ', profile
+    print('Profile: ', profile)
 
     tsess = Session()
     author = tsess.query(TempAuthor)\
@@ -859,11 +860,9 @@ def author_report():
     if not author:
         return jsonify(**{'error': 'Author not found'})
 
-    author = author.json_all if author else None
-    print author['name'],\
-        author['affiliation'],\
-        author['id'], "\n",\
-        author
+    author = json.loads(author.json_all) if author else None
+    print(author['name'], author['affiliation'], author['id'])
+    print(author)
 
 
 
@@ -1021,10 +1020,10 @@ def plot_benchmark64(percentiles, logy, title, filename):
 
 
 def base64_plot(reset=True):
-    csIO = cStringIO.StringIO()
-    plt.savefig(csIO, format='png')
-    csIO.seek(0)
-    ret = base64.b64encode(csIO.read())
+    bIO = BytesIO()
+    plt.savefig(bIO, format='png')
+    bIO.seek(0)
+    ret = base64.b64encode(bIO.read()).decode('ascii')
     if reset:
         plt.gcf().clear()
         plt.figure()

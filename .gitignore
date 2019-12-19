@@ -3,3 +3,8 @@
 **/*.pyc
 app/static/bower_components
 config.py
+
+venv/
+env/
+.python-version
+.vscode/

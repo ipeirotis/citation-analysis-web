@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 import json
 import argparse
 
@@ -43,7 +43,7 @@ session = Session()
 
 def search_and_fill(name, override=False):
     try:
-        authors = scholarly.search_author(name)
+        authors = list(scholarly.search_author(name))
         ### For each of these, save to database as
         to_fill = list(authors)
         to_fill2 = []
@@ -54,14 +54,15 @@ def search_and_fill(name, override=False):
                 .order_by(Author.id.desc())\
                 .first()
             if exst_auth is None:
-                print "Author was none"
+                print("Author was none")
                 exst_auth = Author(
-                name=y['name'],
-                organization=y['affiliation'],
-                scholar_id=y['id'],
-                status="Processing",
-                searched=datetime.now(),
-                json_all=y)
+                    name=y['name'],
+                    organization=y['affiliation'],
+                    scholar_id=y['id'],
+                    status="Processing",
+                    searched=datetime.now(),
+                    json_all=y
+                )
                 to_fill2.append(author)
             else:
                 # Only run .fill() once!
@@ -72,7 +73,7 @@ def search_and_fill(name, override=False):
                     exst_auth.searched = datetime.now()
                     exst_auth.filled = None
                 else:
-                    print "We're already searching for the DUDE!"
+                    print("We're already searching for the DUDE!")
                     return
 
             session.add(exst_auth)
@@ -91,7 +92,7 @@ def search_and_fill(name, override=False):
                 y = vars(author)
                 pubs = [vars(pubs) for pubs in y['publications']]
                 y['publications'] = pubs
-                exst_auth.json_all = y
+                exst_auth.json_all = json.dumps(y, default=lambda o: o.__dict__)
                 exst_auth.status = 'Filled'
                 exst_auth.filled = datetime.now()
             except Exception as c:
@@ -116,11 +117,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     author = " ".join(args.author[1:])
-    print author
+    print(author)
 
     search_and_fill(author)
 
 #############################
-
-
-

@@ -100,7 +100,7 @@ app.directive('imageonload', function() {
                     noty.setText(attrs.imageonload + ' Loaded!');
                     noty.setTimeout(3000);
                     noty.setType('success');
-                    scope.$apply(attrs.imageonload);
+                    // scope.$apply(attrs.imageonload);
                 });
                 element.bind('error', function(){
                     noty.setText(attrs.imageonload + ' Failed to load');
